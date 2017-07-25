@@ -1,2 +1,7 @@
 import React, { Component } from 'react';
-import GetImageForm from './GetImageForm';
+
+export default ({images}) =>
+<ul>{images.map(
+  (image, index) =>
+  <li> <img src={image.img_src}/></li>)}
+  </ul>

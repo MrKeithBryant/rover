@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import GetImageButton from './GetImageButton';
 import ImageDisplay from './ImageDisplay';
 
-const API_KEY = 'https://api.nasa.gov/planetary/apod?api_key=Yt1kuSV4Flnd5KwMMYuMdmSibK2W8ugB5U4C64Q0';
+const API_KEY = 'Yt1kuSV4Flnd5KwMMYuMdmSibK2W8ugB5U4C64Q0';
 
 export default class App extends Component {
   constructor() {
@@ -14,6 +14,22 @@ export default class App extends Component {
       images: []
     }
   }
+fetchRoverImage = () => {
+  this.setState({camera: this.state.camera, rover: this.state.rover, sol: this.state.sol});
+let cam = this.state.camera;
+let rove = this.state.rover;
+let num = this.state.sol;
+
+let imageUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/${rove}/photos?sol=${num}&camera=${cam}&api_key=${API_KEY}`;
+fetch(imageUrl)
+.then(response => response.json())
+.then(data => {
+  this.setState({
+    images: data.photos
+  })
+  ;
+})
+}
 
 
 render() {
@@ -34,6 +50,8 @@ render() {
 </select>
 <label htmlFor="sol">Martian Sol: 1000-2000</label>
 <input type="number" onChange={this.handleSol} max="2000" min="1000" value={this.state.value}/>
+<GetImageButton onClick={this.fetchRoverImage} />
+<ImageDisplay images={this.state.images} />
 </div>
   );
 }
